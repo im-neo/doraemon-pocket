@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Comparator;
 import java.util.List;
 
-public class TopContextTest {
+public class RankContextTest {
     public static void main(String[] args) {
         List<Student> collect = Lists.newArrayList(
                 new Student(1, 7),
@@ -23,19 +23,19 @@ public class TopContextTest {
 
 
         System.out.println("按成绩排序取倒数 3 名");
-        List<Student> result = TopContext.build(collect, Student::getScore, Comparator.comparing(Student::getScore)).top(3);
+        List<Student> result = RankContext.build(collect, Student::getScore, Comparator.comparing(Student::getScore)).top(3);
         for (Student student : result) {
             System.out.println(student);
         }
 
         System.out.println("按成绩排序取前 3 名");
-        result = TopContext.build(collect, Student::getScore, Comparator.comparing(Student::getScore).reversed()).top(3);
+        result = RankContext.build(collect, Student::getScore, Comparator.comparing(Student::getScore).reversed()).top(3);
         for (Student student : result) {
             System.out.println(student);
         }
 
 
-        TopContext<Student, Integer> topContext = TopContext.build(
+        RankContext<Student, Integer> topContext = RankContext.build(
                 collect,
                 Student::getRank,
                 Comparator.comparing(Student::getRank, Comparator.reverseOrder())
