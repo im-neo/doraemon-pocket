@@ -24,8 +24,10 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 趣运动自动订场地
@@ -47,8 +49,7 @@ public class QuyundongAutoBooking {
     public static final List<String> COURT_LIST = Lists.newArrayList("5号场", "2号场", "6号场", "3号场", "4号场", "1号场");
 
     public static final List<TargetGoods> TARGET_GOODS_CONFIG = Lists.newArrayList(
-            new TargetGoods("0903",
-                    Lists.newArrayList(new TargetTimeGoods("9:00-10:00", 1)))
+            new TargetGoods("0903", new TargetTimeGoods("9:00-10:00", 1))
     );
 
     public WebDriver driver;
@@ -300,6 +301,13 @@ public class QuyundongAutoBooking {
         private String date;
 
         private List<TargetTimeGoods> goodsList;
+
+        public TargetGoods(String date, TargetTimeGoods... goodsArray) {
+            this.date = date;
+            if (Objects.nonNull(goodsArray)) {
+                this.goodsList = Arrays.asList(goodsArray);
+            }
+        }
 
         public boolean isFinished() {
             return this.goodsList.stream().allMatch(TargetTimeGoods::isFinished);
