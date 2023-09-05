@@ -68,6 +68,9 @@ public class QuyundongAutoBooking {
     public QuyundongAutoBooking() {
         // 设置为移动端
         ChromeOptions options = new ChromeOptions();
+        // 设置后台无窗口运行
+        options.addArguments("headless");
+        options.addArguments("--no-sandbox");
         options.setExperimentalOption("mobileEmulation", ImmutableMap.of(
                 "userAgent", "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30",
                 "deviceMetrics", ImmutableMap.of(
@@ -392,7 +395,7 @@ public class QuyundongAutoBooking {
                     break;
                 }
 
-                long nextLoop = RandomUtil.randomLong(60 * 1000, 2 * 60 * 1000);
+                long nextLoop = RandomUtil.randomLong(30 * 1000, 60 * 1000);
                 autoOrder.sleep(nextLoop);
             } catch (Exception e) {
                 System.out.println(ExceptionUtils.getStackTrace(e));
