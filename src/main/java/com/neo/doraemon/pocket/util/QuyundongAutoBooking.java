@@ -1,14 +1,17 @@
 package com.neo.doraemon.pocket.util;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.text.StrFormatter;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.extra.mail.MailUtil;
 import cn.hutool.json.JSONUtil;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.By;
@@ -28,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 趣运动自动订场地
@@ -49,7 +53,7 @@ public class QuyundongAutoBooking {
     public static final List<String> COURT_LIST = Lists.newArrayList("5号场", "2号场", "6号场", "3号场", "4号场", "1号场");
 
     public static final List<TargetGoods> TARGET_GOODS_CONFIG = Lists.newArrayList(
-            new TargetGoods("0903", new TargetTimeGoods("9:00-10:00", 1))
+            new TargetGoods("0907", new TargetTimeGoods("18:00-19:00", 2), new TargetTimeGoods("19:00-20:00", 2))
     );
 
     public WebDriver driver;
@@ -122,6 +126,9 @@ public class QuyundongAutoBooking {
             driver.get(this.generateBookingUrl(targetDate));
             this.sleep();
             List<WebElement> courtElementList = driver.findElement(By.className("book-list")).findElements(By.className("available"));
+
+            List<String> courtContentList = courtElementList.stream().map(i -> i.getAttribute("content")).collect(Collectors.toList());
+            System.out.println(DateUtil.now() + " >>> " + (CollectionUtils.isEmpty(courtContentList) ? "无任何可预订场地" : Joiner.on(",").join(courtContentList)));
 
             List<TargetTimeGoods> targetTimeGoodsList = targetGoods.getGoodsList();
             for (TargetTimeGoods targetTimeGoods : targetTimeGoodsList) {
